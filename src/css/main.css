@@ -1,0 +1,71 @@
+/* *{
+    outline: 1px solid red;
+} */
+
+.form {
+  display: flex;
+  gap: 1rem;
+  flex-basis: content;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.floors-group {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.floor {
+  height: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.floor-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 4rem;
+  height: 100%;
+}
+
+.lift-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  gap: 4px;
+}
+
+.lift-buttons > button {
+  width: 4rem;
+}
+
+.base {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.base > span {
+  flex-grow: 1;
+  background-color: black;
+  height: 1px;
+}
+
+.lifts {
+  display: flex;
+  gap: 4rem;
+}
+
+.lift {
+  width: 3rem;
+  height: 5rem;
+  background-color: silver;
+}
