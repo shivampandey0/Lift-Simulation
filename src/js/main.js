@@ -12,7 +12,6 @@ generateBtn.addEventListener('click', () => {
 
 function buildSimulation(floors, lifts) {
   const floorsArray = [];
-  const liftsArray = [];
 
   const liftsGroup = document.createElement('div');
   liftsGroup.setAttribute('class', 'lifts');
@@ -20,19 +19,24 @@ function buildSimulation(floors, lifts) {
   for (let i = 0; i < lifts; i++) {
     const lift = document.createElement('div');
     lift.setAttribute('class', 'lift');
+    lift.setAttribute('data-floor', `0`);
+    lift.setAttribute('data-lift', `${i + 1}`);
     liftsGroup.append(lift);
   }
 
   for (let i = 0; i < floors; i++) {
     const floor = document.createElement('div');
     floor.setAttribute('class', 'floor');
+    floor.setAttribute('data-floor', `${i + 1}`);
     const liftButtons = document.createElement('div');
     liftButtons.setAttribute('class', 'lift-buttons');
-    const upBtn = document.createElement('button');
-    upBtn.textContent = 'Up';
-    const downBtn = document.createElement('button');
-    downBtn.textContent = 'Down';
-    liftButtons.append(upBtn, downBtn);
+    const callBtn = document.createElement('button');
+    callBtn.setAttribute('class', `floor-call`);
+    callBtn.setAttribute('data-floor', `${i + 1}`);
+    callBtn.textContent = 'Call';
+    const floorTitle = document.createElement('h3');
+    floorTitle.textContent = `Floor ${i + 1}`;
+    liftButtons.append(callBtn, floorTitle);
     const floorContainer = document.createElement('div');
     floorContainer.setAttribute('class', 'floor-container');
     floorContainer.append(liftButtons);
@@ -40,14 +44,40 @@ function buildSimulation(floors, lifts) {
 
     const base = document.createElement('div');
     base.setAttribute('class', 'base');
-    const floorBase = document.createElement('span');
-    const floorTitle = document.createElement('h3');
-    floorTitle.textContent = `Floor ${i + 1}`;
-    base.append(floorBase, floorTitle);
     floor.append(floorContainer, base);
 
     floorsArray.unshift(floor);
   }
 
   floorsGroup.append(...floorsArray);
+}
+
+document.addEventListener('click', (e) => {
+  const floorCall = Number(e.target.dataset.floor);
+  if (floorCall) {
+    //Move the lift
+    moveLift(floorCall);
+  }
+});
+
+function moveLift(floorCall) {
+  const lifts = document.querySelectorAll('.lift');
+  for (const lift of lifts) {
+    const currentFloor = Number(lift.dataset.floor);
+    const { height } = document
+      .querySelector(`[data-floor='${floorCall}']`)
+      .getBoundingClientRect();
+    if (currentFloor !== floorCall && !lift.classList.contains('busy')) {
+      lift.style.transform = `translateY(-${height * (floorCall - 1)}px)`;
+      lift.style.transition = `all ${floorCall * 2}s ease-in`;
+      lift.dataset.floor = floorCall;
+      lift.classList.add('busy');
+
+      lift.addEventListener('transitionend', () =>
+        lift.classList.remove('busy')
+      );
+
+      break;
+    }
+  }
 }
