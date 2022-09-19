@@ -42,10 +42,7 @@ function buildSimulation(floors, lifts) {
     floorContainer.append(liftButtons);
     if (i === 0) floorContainer.append(liftsGroup);
 
-    const base = document.createElement('div');
-    base.setAttribute('class', 'base');
-    floor.append(floorContainer, base);
-
+    floor.append(floorContainer);
     floorsArray.unshift(floor);
   }
 
@@ -69,7 +66,9 @@ function moveLift(floorCall) {
       .getBoundingClientRect();
     if (currentFloor !== floorCall && !lift.classList.contains('busy')) {
       lift.style.transform = `translateY(-${height * (floorCall - 1)}px)`;
-      lift.style.transition = `all ${floorCall * 2}s ease-in`;
+      lift.style.transition = `all ${
+        Math.abs(floorCall - currentFloor) * 2
+      }s ease-in`;
       lift.dataset.floor = floorCall;
       lift.classList.add('busy');
 

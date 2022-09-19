@@ -49,17 +49,6 @@
   width: 4rem;
 }
 
-.base {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-.base > span {
-  flex-grow: 1;
-  background-color: black;
-  height: 1px;
-}
-
 .lifts {
   display: flex;
   gap: 4rem;
