@@ -7,6 +7,8 @@ generateBtn.addEventListener('click', () => {
   const floorsCount = Number(floorsInput.value);
   const liftsCount = Number(liftsInput.value);
 
+  floorsGroup.innerHTML = '';
+
   buildSimulation(floorsCount, liftsCount);
 });
 
