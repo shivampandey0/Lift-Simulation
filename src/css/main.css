@@ -46,7 +46,12 @@
 }
 
 .lift-buttons > button {
-  width: 4rem;
+  padding: 4px;
+  border-radius: 2px;
+  font-weight: bold;
+  border: 2px transparent;
+  background-color: goldenrod;
+  color: black;
 }
 
 .lifts {
@@ -55,8 +60,9 @@
 }
 
 .lift {
-  width: 3rem;
+  width: 4rem;
   height: 5rem;
-  background-color: silver;
+  background-color: gold;
+  border: 1px solid black;
   position: relative;
 }
