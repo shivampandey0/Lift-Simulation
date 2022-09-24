@@ -62,7 +62,60 @@
 .lift {
   width: 4rem;
   height: 5rem;
-  background-color: gold;
+  background-color: black;
   border: 1px solid black;
   position: relative;
+  overflow: hidden;
+}
+
+.lift::before {
+  content: '';
+  display: block;
+  position: absolute;
+  block-size: 100%;
+  inset-inline-start: 0.5px;
+  inline-size: 49%;
+  background-color: gold;
+}
+
+.lift::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset-inline-end: 0.5px;
+  block-size: 100%;
+  inline-size: 49%;
+  background-color: gold;
+}
+
+.door-operation::before {
+  animation: left-door 5000ms ease;
+}
+
+.door-operation::after {
+  animation: right-door 5000ms ease;
+}
+
+@keyframes left-door {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes right-door {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
