@@ -18,6 +18,7 @@ function buildSimulation(floors, lifts) {
   const liftsGroup = document.createElement('div');
   liftsGroup.setAttribute('class', 'lifts');
 
+  // generate Lifts
   for (let i = 0; i < lifts; i++) {
     const lift = document.createElement('div');
     lift.setAttribute('class', 'lift');
@@ -26,6 +27,7 @@ function buildSimulation(floors, lifts) {
     liftsGroup.append(lift);
   }
 
+  // generate floors
   for (let i = 0; i < floors; i++) {
     const floor = document.createElement('div');
     floor.setAttribute('class', 'floor');
@@ -60,8 +62,8 @@ document.addEventListener('click', (e) => {
   }
 });
 
-function getClosesLift(floorCall, lifts) {
-  let distance = 0;
+function getClosestLift(floorCall, lifts) {
+  let distance = null;
   let lift = '';
 
   for (const _lift of lifts) {
@@ -69,7 +71,7 @@ function getClosesLift(floorCall, lifts) {
     const floorDistance = Math.abs(floorCall - Number(_lift.dataset.floor));
 
     // finding closest lift to the floorCall based on floor Distance
-    if (distance > floorDistance || !distance) {
+    if (distance > floorDistance || distance === null) {
       distance = floorDistance;
       lift = _lift;
     }
@@ -85,7 +87,7 @@ function moveLift(floorCall) {
   const nonBusyLifts = lifts.filter((lift) => !lift.classList.contains('busy'));
 
   // get the closes lift to the current Floor
-  const { lift, distance } = getClosesLift(floorCall, nonBusyLifts);
+  const { lift, distance } = getClosestLift(floorCall, nonBusyLifts);
 
   const currentFloor = Number(lift.dataset.floor);
 
@@ -99,6 +101,26 @@ function moveLift(floorCall) {
     lift.dataset.floor = floorCall;
     lift.classList.add('busy');
 
-    lift.addEventListener('transitionend', () => lift.classList.remove('busy'));
+    // open doors when lift has reached the floor
+    setTimeout(() => {
+      lift.classList.add('door-operation');
+    }, distance * 2000 + 500);
+
+    // free the lift
+    lift.addEventListener('transitionend', (e) => {
+      setTimeout(() => {
+        lift.classList.remove('door-operation');
+        lift.classList.remove('busy');
+      }, 5500);
+    });
+  } else {
+    // If lift at same floor open doors
+
+    lift.classList.add('door-operation');
+    lift.classList.add('busy');
+    setTimeout(() => {
+      lift.classList.remove('door-operation');
+      lift.classList.remove('busy');
+    }, 5500);
   }
 }
