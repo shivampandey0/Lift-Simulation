@@ -52,15 +52,33 @@ function buildSimulation(floors, lifts) {
 
   floorsGroup.append(...floorsArray);
 }
-const floorCalls = new Set();
+
 document.addEventListener('click', (e) => {
   const floorCall = Number(e.target.dataset.floor);
-  floorCalls.add(floorCall);
+
   if (floorCall) {
     //Move the lift
-    moveLift(floorCall);
+    processRequest(floorCall);
   }
 });
+
+function processRequest(floorCall) {
+  const lifts = Array.from(document.querySelectorAll('.lift'));
+
+  // getting all the non-busy lifts
+  const nonBusyLifts = lifts.filter((lift) => !lift.classList.contains('busy'));
+
+  if (nonBusyLifts.length) {
+    // get the closes lift to the current Floor
+    const { lift, distance } = getClosestLift(floorCall, nonBusyLifts);
+    console.log(floorCall, lift, distance);
+    moveLift(floorCall, lift, distance);
+  } else {
+    setTimeout(() => {
+      processRequest(floorCall);
+    }, 1000);
+  }
+}
 
 function getClosestLift(floorCall, lifts) {
   let distance = null;
@@ -76,19 +94,10 @@ function getClosestLift(floorCall, lifts) {
       lift = _lift;
     }
   }
-
   return { lift, distance };
 }
 
-function moveLift(floorCall) {
-  const lifts = Array.from(document.querySelectorAll('.lift'));
-
-  // getting all the non-busy lifts
-  const nonBusyLifts = lifts.filter((lift) => !lift.classList.contains('busy'));
-
-  // get the closes lift to the current Floor
-  const { lift, distance } = getClosestLift(floorCall, nonBusyLifts);
-
+function moveLift(floorCall, lift, distance) {
   const currentFloor = Number(lift.dataset.floor);
 
   const { height } = document
@@ -115,7 +124,6 @@ function moveLift(floorCall) {
     });
   } else {
     // If lift at same floor open doors
-
     lift.classList.add('door-operation');
     lift.classList.add('busy');
     setTimeout(() => {
