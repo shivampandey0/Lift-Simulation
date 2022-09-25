@@ -7,9 +7,14 @@ generateBtn.addEventListener('click', () => {
   const floorsCount = Number(floorsInput.value);
   const liftsCount = Number(liftsInput.value);
 
-  floorsGroup.innerHTML = '';
+  const screenWidth = screen.availWidth;
 
-  buildSimulation(floorsCount, liftsCount);
+  if (screenWidth < 600 && liftsCount > 2) {
+    alert('This screen size cant have more than 2 lifts');
+  } else {
+    floorsGroup.innerHTML = '';
+    buildSimulation(floorsCount, liftsCount);
+  }
 });
 
 function buildSimulation(floors, lifts) {
@@ -53,10 +58,13 @@ function buildSimulation(floors, lifts) {
   floorsGroup.append(...floorsArray);
 }
 
+let previousCall;
+
 document.addEventListener('click', (e) => {
   const floorCall = Number(e.target.dataset.floor);
 
-  if (floorCall) {
+  if (floorCall && previousCall !== floorCall) {
+    previousCall = floorCall;
     //Move the lift
     processRequest(floorCall);
   }
@@ -71,7 +79,6 @@ function processRequest(floorCall) {
   if (nonBusyLifts.length) {
     // get the closes lift to the current Floor
     const { lift, distance } = getClosestLift(floorCall, nonBusyLifts);
-    console.log(floorCall, lift, distance);
     moveLift(floorCall, lift, distance);
   } else {
     setTimeout(() => {
