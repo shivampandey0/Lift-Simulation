@@ -43,8 +43,8 @@ function buildSimulation(floors, lifts) {
     callBtn.setAttribute("class", `floor-call-btn`);
     callBtn.setAttribute("data-floor", `${i + 1}`);
     callBtn.textContent = "Call";
-    const floorTitle = document.createElement("h3");
-    floorTitle.textContent = `Floor ${i + 1}`;
+    const floorTitle = document.createElement("h4");
+    floorTitle.textContent = `F - ${i + 1}`;
     liftButtons.append(callBtn, floorTitle);
     const floorContainer = document.createElement("div");
     floorContainer.setAttribute("class", "floor-container");
